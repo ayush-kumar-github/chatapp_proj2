@@ -55,10 +55,6 @@ io.on("connection", (socket) => {
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/public/build")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "public", "build", "index.html"))
-  );
 } else {
   app.get("/", (req, res) => {
     res.send("APIs is running....");
