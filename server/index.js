@@ -27,9 +27,6 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-const server = app.listen(process.env.PORT, () =>
-  console.log(`Server started on ${process.env.PORT}`)
-);
 const io = socket(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -52,6 +49,8 @@ io.on("connection", (socket) => {
   });
 });
 
+const __dirname = path.resolve();
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/public/build")));
 
@@ -63,3 +62,7 @@ if (process.env.NODE_ENV === "production") {
     res.send("APIs is running....");
   });
 }
+
+const server = app.listen(process.env.PORT, () =>
+  console.log(`Server started on ${process.env.PORT}`)
+);
