@@ -27,7 +27,18 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-const server = app.listen(process.env.PORT, () =>
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("APIs is running....");
+  });
+}
+
+const server = app.listen(process.env.PORT || 5000, () =>
   console.log(`Server started on ${process.env.PORT}`)
 );
 
@@ -52,14 +63,3 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("public/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "public", "build", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.send("APIs is running....");
-  });
-}
