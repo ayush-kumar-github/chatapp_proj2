@@ -24,12 +24,12 @@ mongoose
     console.log(err.message);
   });
 
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
+
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)
 );
-
-app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoutes);
 
 const io = socket(server, {
   cors: {
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("public/build"));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "public", "build", "index.html"));
   });
 } else {
   app.get("/", (req, res) => {
