@@ -6,8 +6,9 @@ const messageRoutes = require("./routes/messages");
 const app = express();
 const socket = require("socket.io");
 const path = require("path");
+const dotenv = require("dotenv");
 
-require("dotenv").config();
+dotenv.config();
 
 app.use(cors());
 app.use(express.json());
